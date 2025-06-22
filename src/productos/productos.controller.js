@@ -1,4 +1,4 @@
-const { getTodosProductosService } = require("./productos.service");
+const { getTodosProductosService, getCategoriasService, postCategoriasService, patchCategoriasService, deleteCategoriasService } = require("./productos.service");
 
 const getTodosProductosController = async (req, res) => {
   try {
@@ -15,4 +15,69 @@ const getTodosProductosController = async (req, res) => {
 }
 
 
-module.exports = { getTodosProductosController };
+
+
+
+// categorias
+
+const getCategoriasController = async (req, res) => {
+  try {
+    const response = await getCategoriasService()
+    return res.json({
+      status: response.status,
+      message: response.message,
+      data: response.data});
+  }catch (error) {
+    console.log(error);
+    return res.status(400).json(error);
+  }
+}
+
+const postCategoriasController = async (req, res) => {
+  const categoria = req.body;
+  try {
+    const response = await postCategoriasService(categoria)
+    return res.json({
+      status: response.status,
+      message: response.message,
+      data: response.data});
+  }
+  catch (error) {
+    console.log(error);
+    return res.status(400).json(error);
+  }
+}
+
+const patchCategoriasController = async (req, res) => {
+  const {nombre} = req.body;
+  const id_categoria = req.params.id_categoria;
+  try {
+    const response = await patchCategoriasService(nombre, id_categoria)
+    console.log(response);
+    return res.json({
+      status: response.status,
+      message: response.message,
+      data: response.data});
+  }
+  catch (error) {
+    console.log(error);
+    return res.status(400).json(error);
+  }
+}
+
+const deleteCategoriasController = async (req, res) => {
+  const id_categoria = req.params.id_categoria;
+  try {
+    const response = await deleteCategoriasService(id_categoria)
+    return res.json({
+      status: response.status,
+      message: response.message,
+      data: response.data});
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json(error);
+  }
+}
+
+
+module.exports = { getTodosProductosController, getCategoriasController, postCategoriasController, patchCategoriasController, deleteCategoriasController };

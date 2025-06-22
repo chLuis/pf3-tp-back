@@ -38,4 +38,99 @@ const getTodosProductosService = async () => {
   }
 }
 
-module.exports = { getTodosProductosService };
+
+
+
+// CATEGORIAS
+
+const getCategoriasService = async () => {{
+  try {
+    const connection = await db_connection;
+    const [results] = await connection.query(`
+      SELECT * FROM productos_categorias
+      `);
+    const response = {
+      status: 200,
+      message: "Categorias obtenidas correctamente",
+      data: results
+    }
+    return response
+  }
+  catch (error) {
+    const response = {
+      status: 400,
+      message: "Fallo en la recoleccion de datos",
+      data: error
+    };
+    return response
+  }
+}}
+
+const postCategoriasService = async (categoria) => {
+  try {
+    const connection = await db_connection;
+    const [results] = await connection.query(`
+      INSERT INTO productos_categorias (nombre) values
+      ('${categoria.nombre}');`)
+    const response = {
+      status: 201,
+      message: "Categoria creada correctamente",
+      data: results
+    }
+    return response
+  }
+  catch (error) {
+  const response = {
+      status: 400,
+      message: "Fallo en la creacion de categoria",
+      data: error
+    };
+    return response
+  }
+}
+
+const patchCategoriasService = async (nombre, id_categoria) => {
+  try{
+    const connection = await db_connection;
+    const [results] = await connection.query(`
+      UPDATE productos_categorias SET nombre = '${nombre}' WHERE id_categoria = ${id_categoria};
+      `)
+    const response = {
+      status: 200,
+      message: "Categoria editada correctamente",
+      data: results
+    }
+    return response
+  } catch (error) {
+    const response = {
+      status: 400,
+      message: "Fallo en la edicion de categoria",
+      data: error
+    };
+    return response
+  }
+}
+
+const deleteCategoriasService = async (id_categoria) => {
+  try {
+    const connection = await db_connection;
+    const [results] = await connection.query(`
+      DELETE FROM productos_categorias WHERE id_categoria = ${id_categoria};
+      `)
+    const response = {
+      status: 200,
+      message: "Categoria eliminada correctamente",
+      data: results
+    }
+    return response
+  } catch (error) {
+    const response = {
+      status: 400,
+      message: "Fallo en la eliminacion de categoria",
+      data: error
+    };
+    return response
+  }
+}
+
+module.exports = { getTodosProductosService, getCategoriasService, postCategoriasService, patchCategoriasService, deleteCategoriasService };
