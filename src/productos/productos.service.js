@@ -133,4 +133,100 @@ const deleteCategoriasService = async (id_categoria) => {
   }
 }
 
-module.exports = { getTodosProductosService, getCategoriasService, postCategoriasService, patchCategoriasService, deleteCategoriasService };
+
+//IMAGENES
+
+const getImagenesService = async () => {
+  try {
+    const connection = await db_connection;
+    const [results] = await connection.query(`SELECT id_imagen, nombre, url FROM productos_imagenes`);
+    const response = {
+      status: 200,
+      message: "Imagenes obtenidas correctamente",
+      data: results
+    }
+    return response
+  }
+  catch (error) {
+    const response = {
+      status: 400,
+      message: "Fallo en la recoleccion de datos",
+      data: error
+    };
+    return response
+  }
+}
+
+const postImagenesService = async (imagen) => {
+  try {
+    const connection = await db_connection;
+    const [results] = await connection.query(`
+      INSERT INTO productos_imagenes (nombre, url) values
+      (TRIM('${imagen.nombre}'), TRIM('${imagen.url}'));`)
+    const response = {
+      status: 201,
+      message: "Imagen creada correctamente",
+      data: results
+    }
+    return response
+  }
+  catch (error) {
+  const response = {
+      status: 400,
+      message: "Fallo en la creacion de imagen",
+      data: error
+    };
+    return response
+  }
+}
+
+const patchImagenesService = async (nombre, url, id_imagen) => {
+  try{
+    const connection = await db_connection;
+    const [results] = await connection.query(`
+      UPDATE productos_imagenes SET nombre = TRIM('${nombre}'), url = TRIM('${url}') WHERE id_imagen = ${id_imagen};
+      `)
+    const response = {
+      status: 200,
+      message: "Imagen editada correctamente",
+      data: results
+    }
+    return response
+  } catch (error) {
+    const response = {
+      status: 400,
+      message: "Fallo en la edicion de imagen",
+      data: error
+    };
+    return response
+  }
+}
+
+const deleteImagenesService = async (id_imagen) => {
+  try {
+    const connection = await db_connection;
+    const [results] = await connection.query(`
+      DELETE FROM productos_imagenes WHERE id_imagen = ${id_imagen};
+      `)
+    const response = {
+      status: 200,
+      message: "Imagen eliminada correctamente",
+      data: results
+    }
+    return response
+  } catch (error) {
+    const response = {
+      status: 400,
+      message: "Fallo en la eliminacion de imagen",
+      data: error
+    };
+    return response
+  }
+}
+
+module.exports = { getTodosProductosService, getCategoriasService, postCategoriasService, patchCategoriasService, deleteCategoriasService,
+  getImagenesService,
+  postImagenesService,
+  patchImagenesService,
+  deleteImagenesService
+ };

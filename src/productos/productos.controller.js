@@ -1,4 +1,4 @@
-const { getTodosProductosService, getCategoriasService, postCategoriasService, patchCategoriasService, deleteCategoriasService } = require("./productos.service");
+const { getTodosProductosService, getCategoriasService, postCategoriasService, patchCategoriasService, deleteCategoriasService, getImagenesService, postImagenesService, patchImagenesService, deleteImagenesService } = require("./productos.service");
 
 const getTodosProductosController = async (req, res) => {
   try {
@@ -80,4 +80,71 @@ const deleteCategoriasController = async (req, res) => {
 }
 
 
-module.exports = { getTodosProductosController, getCategoriasController, postCategoriasController, patchCategoriasController, deleteCategoriasController };
+// IMAGENES
+
+const getImagenesController = async (req, res) => {
+  try {
+    const response = await getImagenesService()
+    return res.json({
+      status: response.status,
+      message: response.message,
+      data: response.data 
+    })
+  }
+  catch (error) {
+    console.log(error);
+    return res.status(400).json(error);
+  }
+}
+
+
+const postImagenesController = async (req, res) => {
+  const imagen = req.body;
+  try {
+    const response = await postImagenesService(imagen)
+    return res.json({
+      status: response.status,
+      message: response.message,
+      data: response.data});
+  }
+  catch (error) {
+    console.log(error);
+    return res.status(400).json(error);
+  }
+}
+
+const patchImagenesController = async (req, res) => {
+  const {nombre, url} = req.body;
+  const id_imagen = req.params.id_imagen;
+  try {
+    const response = await patchImagenesService(nombre, url, id_imagen)
+    return res.json({
+      status: response.status,
+      message: response.message,
+      data: response.data});
+  }
+  catch (error) {
+    console.log(error);
+    return res.status(400).json(error);
+  }
+}
+
+const deleteImagenesController = async (req, res) => {
+  const id_imagen = req.params.id_imagen;
+  try {
+    const response = await deleteImagenesService(id_imagen)
+    return res.json({
+      status: response.status,
+      message: response.message,
+      data: response.data});
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json(error);
+  }
+}
+module.exports = { getTodosProductosController, getCategoriasController, postCategoriasController, patchCategoriasController, deleteCategoriasController,
+  getImagenesController,
+  postImagenesController,
+  patchImagenesController,
+  deleteImagenesController
+ };
