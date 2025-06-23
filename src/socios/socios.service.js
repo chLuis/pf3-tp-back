@@ -99,7 +99,6 @@ const patchSociosService = async (socio) => {
         socio_hasta='${socio.socio_hasta}', 
         id_plan=${socio.id_plan}
       WHERE id_socio=${socio.id_socio}`);
-      console.log(results, "RESULTS");
     const response = {
       status: 200,
       message: "Socio editado correctamente",

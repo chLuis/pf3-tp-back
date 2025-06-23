@@ -224,9 +224,105 @@ const deleteImagenesService = async (id_imagen) => {
   }
 }
 
+// DESCUENTOS
+
+
+const getDescuentosService = async () => {
+  try {
+    const connection = await db_connection;
+    const [results] = await connection.query(`SELECT id_descuento, porcentaje, motivo FROM productos_descuentos`);
+    const response = {
+      status: 200,
+      message: "Descuentos obtenidos correctamente",
+      data: results
+    }
+    return response
+  }
+  catch (error) {
+    const response = {
+      status: 400,
+      message: "Fallo en la recoleccion de datos",
+      data: error
+    };
+    return response
+  }
+}
+
+const postDescuentosService = async (descuento) => {
+  try {
+    const connection = await db_connection;
+    const [results] = await connection.query(`
+      INSERT INTO productos_descuentos (porcentaje, motivo) VALUES
+      (${descuento.porcentaje}, TRIM('${descuento.motivo}'));`)
+    const response = {
+      status: 201,
+      message: "Descuento creado correctamente",
+      data: results
+    }
+    return response
+  }
+  catch (error) {
+  const response = {
+      status: 400,
+      message: "Fallo en la creacion del descuento",
+      data: error
+    };
+    return response
+  }
+}
+
+const patchDescuentosService = async (porcentaje, motivo, id_descuento) => {
+  try{
+    const connection = await db_connection;
+    const [results] = await connection.query(`
+      UPDATE productos_descuentos SET porcentaje = ${porcentaje}, motivo = TRIM('${motivo}') WHERE id_descuento = ${id_descuento};
+      `)
+    const response = {
+      status: 200,
+      message: "Descuento editado correctamente",
+      data: results
+    }
+    return response
+  } catch (error) {
+    const response = {
+      status: 400,
+      message: "Fallo en la edicion del descuento",
+      data: error
+    };
+    return response
+  }
+}
+
+const deleteDescuentosService = async (id_descuento) => {
+  try {
+    const connection = await db_connection;
+    const [results] = await connection.query(`
+      DELETE FROM productos_descuentos WHERE id_descuento = ${id_descuento};
+      `)
+    const response = {
+      status: 200,
+      message: "Descuento eliminado correctamente",
+      data: results
+    }
+    return response
+  } catch (error) {
+    const response = {
+      status: 400,
+      message: "Fallo en la eliminacion del descuento",
+      data: error
+    };
+    return response
+  }
+}
+
 module.exports = { getTodosProductosService, getCategoriasService, postCategoriasService, patchCategoriasService, deleteCategoriasService,
   getImagenesService,
   postImagenesService,
   patchImagenesService,
-  deleteImagenesService
+  deleteImagenesService,
+  //descuentos
+  getDescuentosService,
+  postDescuentosService,
+  patchDescuentosService,
+  deleteDescuentosService
  };
