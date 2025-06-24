@@ -1,4 +1,4 @@
-const { getTodosProductosService, getCategoriasService, postCategoriasService, patchCategoriasService, deleteCategoriasService, getImagenesService, postImagenesService, patchImagenesService, deleteImagenesService, getDescuentosService, postDescuentosService, patchDescuentosService, deleteDescuentosService } = require("./productos.service");
+const { getTodosProductosService, getCategoriasService, postCategoriasService, patchCategoriasService, deleteCategoriasService, getImagenesService, postImagenesService, patchImagenesService, deleteImagenesService, getDescuentosService, postDescuentosService, patchDescuentosService, deleteDescuentosService, postProductosService, patchProductosService, deleteProductosService } = require("./productos.service");
 
 const getTodosProductosController = async (req, res) => {
   try {
@@ -14,6 +14,51 @@ const getTodosProductosController = async (req, res) => {
   }
 }
 
+const postProductosController = async (req, res) => {
+  const producto = req.body;
+  try {
+    const response = await postProductosService(producto)
+    return res.json({
+      status: response.status,
+      message: response.message,
+      data: response.data});
+  }
+  catch (error) {
+    console.log(error);
+    return res.status(400).json(error);
+  }
+}
+
+const patchProductosController = async (req, res) => {
+  const producto = req.body;
+  const id_producto = req.params.id_producto
+  try {
+    const response = await patchProductosService(producto, id_producto)
+    return res.json({
+      status: response.status,
+      message: response.message,
+      data: response.data});
+  }
+  catch (error) {
+    console.log(error);
+    return res.status(400).json(error);
+  }
+}
+
+const deleteProductosController = async (req, res) => {
+  const id_producto = req.params.id_producto;
+  try {
+    const response = await deleteProductosService(id_producto)
+    return res.json({
+      status: response.status,
+      message: response.message,
+      data: response.data});
+  }
+  catch (error) {
+    console.log(error);
+    return res.status(400).json(error);
+  }
+}
 
 
 
@@ -208,6 +253,9 @@ const deleteDescuentosController = async (req, res) => {
 
 module.exports = { 
   getTodosProductosController, 
+  postProductosController,
+  patchProductosController,
+  deleteProductosController,
   //categorias
   getCategoriasController, 
   postCategoriasController, 
