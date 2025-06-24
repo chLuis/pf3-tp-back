@@ -3,6 +3,7 @@ const cors = require('cors');
 
 const routerProductos = require('./src/productos/productos.routes')
 const routerSocios = require('./src/socios/socios.routes')
+const routerLogin = require('./src/login/login.routes')
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(cors());
 //Creacion de la ruta para productos, usuarios y socios
 app.use('/productos', routerProductos)
 app.use('/socios', routerSocios)
+app.use('/login', routerLogin)
 
 
 
