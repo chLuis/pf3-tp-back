@@ -1,4 +1,20 @@
-const { getTodosProductosService, getCategoriasService, postCategoriasService, patchCategoriasService, deleteCategoriasService, getImagenesService, postImagenesService, patchImagenesService, deleteImagenesService, getDescuentosService, postDescuentosService, patchDescuentosService, deleteDescuentosService } = require("./productos.service");
+const { getTodosProductosService, getCategoriasService, postCategoriasService, patchCategoriasService, deleteCategoriasService, getImagenesService, postImagenesService, patchImagenesService, deleteImagenesService, getDescuentosService, postDescuentosService, patchDescuentosService, deleteDescuentosService, getProductoId } = require("./productos.service");
+
+const controllerGetProductoId = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const producto = await getProductoId(id);
+
+        if (!producto) {
+            return res.status(404).json({ message: "Producto no encontrado"});
+        }
+
+        res.status(200).json(producto);
+    } catch (error) {
+        console.error("Erro en controllerGetProductoId:", error);
+        res.status(500).json({ message: "Error interno del servidor" });
+    }
+};
 
 const getTodosProductosController = async (req, res) => {
   try {
@@ -207,6 +223,7 @@ const deleteDescuentosController = async (req, res) => {
 
 
 module.exports = { 
+  controllerGetProductoId,
   getTodosProductosController, 
   //categorias
   getCategoriasController, 

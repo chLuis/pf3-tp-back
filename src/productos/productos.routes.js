@@ -13,10 +13,12 @@ const {
   postDescuentosController,
   patchDescuentosController,
   deleteDescuentosController,
+  controllerGetProductoId,
 } = require("./productos.controller");
 
 const route = Router();
 
+route.get('/:id', controllerGetProductoId);
 route.get("/", getTodosProductosController);
 //route.post('/', postProductosController)
 //Categorias
