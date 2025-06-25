@@ -1,4 +1,16 @@
-const { getProductoId, getTodosProductosService, getCategoriasService, postCategoriasService, patchCategoriasService, deleteCategoriasService, getImagenesService, postImagenesService, patchImagenesService, deleteImagenesService, getDescuentosService, postDescuentosService, patchDescuentosService, deleteDescuentosService, postProductosService, patchProductosService, deleteProductosService } = require("./productos.service");
+const { productosRelacionados, getProductoId, getTodosProductosService, getCategoriasService, postCategoriasService, patchCategoriasService, deleteCategoriasService, getImagenesService, postImagenesService, patchImagenesService, deleteImagenesService, getDescuentosService, postDescuentosService, patchDescuentosService, deleteDescuentosService, postProductosService, patchProductosService, deleteProductosService } = require("./productos.service");
+
+const productosRelacionadosController = async (req, res) => {
+  try {
+    const { id_categoria } = req.params
+    const productos = await productosRelacionados(id_categoria)
+
+    res.status(200).json(productos)
+  } catch (error) {
+    console.error("Error al obtener productos relacionados:", error)
+    res.status(500).json({ message: "Error interno"} )
+  }
+}
 
 const controllerGetProductoId = async (req, res) => {
     const { id } = req.params;
@@ -268,7 +280,8 @@ const deleteDescuentosController = async (req, res) => {
 }
 
 
-module.exports = { 
+module.exports = {
+  productosRelacionadosController,
   controllerGetProductoId,
   getTodosProductosController, 
   postProductosController,

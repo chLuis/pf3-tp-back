@@ -16,7 +16,8 @@ const {
   postProductosController,
   patchProductosController,
   deleteProductosController,
-  controllerGetProductoId
+  controllerGetProductoId,
+  productosRelacionadosController
 } = require("./productos.controller");
 
 const route = Router();
@@ -27,6 +28,7 @@ route.post('/', postProductosController);
 route.patch('/:id_producto', patchProductosController);
 route.delete('/:id_producto', deleteProductosController);
 //Categorias
+route.get("/relacionados/:id_categoria", productosRelacionadosController);
 route.get("/categorias", getCategoriasController);
 route.post("/categorias", postCategoriasController);
 route.patch("/categorias/:id_categoria", patchCategoriasController);
