@@ -13,14 +13,19 @@ const {
   postDescuentosController,
   patchDescuentosController,
   deleteDescuentosController,
-  controllerGetProductoId,
+  postProductosController,
+  patchProductosController,
+  deleteProductosController,
+  controllerGetProductoId
 } = require("./productos.controller");
 
 const route = Router();
 
 route.get('/:id', controllerGetProductoId);
 route.get("/", getTodosProductosController);
-//route.post('/', postProductosController)
+route.post('/', postProductosController);
+route.patch('/:id_producto', patchProductosController);
+route.delete('/:id_producto', deleteProductosController);
 //Categorias
 route.get("/categorias", getCategoriasController);
 route.post("/categorias", postCategoriasController);

@@ -67,12 +67,85 @@ const getTodosProductosService = async () => {
   }
 }
 
+const postProductosService = async (producto) => {
+  try {
+    const connection = await db_connection;
+    const [results] = await connection.query(`
+      INSERT INTO productos (nombre, descripcion, precio, imagen, categoria, stock, descuento) values
+      ('${producto.nombre}', 
+      '${producto.descripcion}', 
+      ${producto.precio}, 
+      ${producto.imagen}, 
+      ${producto.categoria}, 
+      ${producto.stock}, 
+      ${producto.descuento});
+      `)
+      const response = {
+      status: 201,
+      message: "Producto creado correctamente",
+      data: results
+    }
+    return response
+  }
+  catch {
+    const response = {
+      status: 400,
+      message: "Fallo en la creacion del producto",
+      data: error
+    };
+    return response
+  }
+}
 
+const patchProductosService = async (producto, id_producto) => {
+  try {
+    const connection = await db_connection;
+    const [results] = await connection.query(`
+      UPDATE productos SET nombre = TRIM('${producto.nombre}'), descripcion = TRIM('${producto.descripcion}'), precio = ${producto.precio}, imagen = ${producto.imagen}, categoria = ${producto.categoria}, stock = ${producto.stock}, descuento = ${producto.descuento}
+      WHERE id_producto = ${id_producto};
+      `)
+      const response = {
+      status: 200,
+      message: "Producto editado correctamente",
+      data: results
+    }
+    return response
+  } catch (error) {
+    const response = {
+      status: 400,
+      message: "Fallo en la edicion del producto",
+      data: error
+    };
+    return response
+  }
+}
+
+const deleteProductosService = async (id_producto) => {
+  try {
+    const connection = await db_connection;
+    const [results] = await connection.query(`
+      DELETE FROM productos WHERE id_producto = ${id_producto};
+      `)
+    const response = {
+      status: 200,
+      message: "Producto eliminado correctamente",
+      data: results
+    }
+    return response
+  } catch (error) {
+    const response = {
+      status: 400,
+      message: "Fallo en la eliminacion del producto",
+      data: error
+    };
+    return response
+  }
+}
 
 
 // CATEGORIAS
 
-const getCategoriasService = async () => {{
+const getCategoriasService = async () => {
   try {
     const connection = await db_connection;
     const [results] = await connection.query(`
@@ -93,7 +166,7 @@ const getCategoriasService = async () => {{
     };
     return response
   }
-}}
+}
 
 const postCategoriasService = async (categoria) => {
   try {
@@ -346,7 +419,16 @@ const deleteDescuentosService = async (id_descuento) => {
 
 module.exports = { 
   getProductoId,
-  getTodosProductosService, getCategoriasService, postCategoriasService, patchCategoriasService, deleteCategoriasService,
+  getTodosProductosService, 
+  postProductosService,
+  patchProductosService,
+  deleteProductosService,
+  //categorias
+  getCategoriasService, 
+  postCategoriasService, 
+  patchCategoriasService, 
+  deleteCategoriasService,
+  //imagenes
   getImagenesService,
   postImagenesService,
   patchImagenesService,
