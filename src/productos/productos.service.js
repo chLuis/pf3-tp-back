@@ -16,10 +16,11 @@ const getProductoId = async (id) => {
               p.descuento as id_descuento,
               d.porcentaje as descuento,
               d.motivo as descuento_motivo
-      FROM productos p
-      JOIN productos_categorias c ON p.categoria = c.id_categoria
-      JOIN productos_imagenes i ON p.imagen = i.id_imagen
-      JOIN productos_descuentos d ON p.descuento = d.id_descuento`,
+            FROM productos p
+            JOIN productos_categorias c ON p.categoria = c.id_categoria
+            JOIN productos_imagenes i ON p.imagen = i.id_imagen
+            JOIN productos_descuentos d ON p.descuento = d.id_descuento
+            WHERE id_producto = ?`,
             [id]
         );
         return rows[0]; //Un solo producto

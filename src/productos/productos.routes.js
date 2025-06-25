@@ -21,7 +21,7 @@ const {
 
 const route = Router();
 
-route.get('/:id', controllerGetProductoId);
+route.get('/producto-detalle/:id', controllerGetProductoId);
 route.get("/", getTodosProductosController);
 route.post('/', postProductosController);
 route.patch('/:id_producto', patchProductosController);
