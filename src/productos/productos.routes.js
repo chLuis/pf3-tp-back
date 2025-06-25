@@ -16,10 +16,12 @@ const {
   postProductosController,
   patchProductosController,
   deleteProductosController,
+  controllerGetProductoId
 } = require("./productos.controller");
 
 const route = Router();
 
+route.get('/:id', controllerGetProductoId);
 route.get("/", getTodosProductosController);
 route.post('/', postProductosController);
 route.patch('/:id_producto', patchProductosController);
