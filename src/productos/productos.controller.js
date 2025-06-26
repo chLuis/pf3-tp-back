@@ -1,4 +1,5 @@
-const { productosRelacionados, getProductoId, getTodosProductosService, getCategoriasService, postCategoriasService, patchCategoriasService, deleteCategoriasService, getImagenesService, postImagenesService, patchImagenesService, deleteImagenesService, getDescuentosService, postDescuentosService, patchDescuentosService, deleteDescuentosService, postProductosService, patchProductosService, deleteProductosService } = require("./productos.service");
+const { db_connection } = require("../config/database");
+const { productosRelacionados, getProductoId, getTodosProductosService, getCategoriasService, postCategoriasService, patchCategoriasService, deleteCategoriasService, getImagenesService, postImagenesService, patchImagenesService, deleteImagenesService, getDescuentosService, postDescuentosService, patchDescuentosService, deleteDescuentosService, postProductosService, patchProductosService, deleteProductosService, carritoService } = require("./productos.service");
 
 const productosRelacionadosController = async (req, res) => {
   try {
@@ -89,6 +90,21 @@ const deleteProductosController = async (req, res) => {
   }
 }
 
+// CARRITO ----------------------------------------------
+//es un post para poder enviar los id en el body
+const postCarritoController = async (req, res) => {
+  const {carrito} = req.body;
+  try {
+    const response = await carritoService(carrito);
+    return res.json({
+      status: response.status,
+      message: response.message,
+      data: response.data});
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json(error);
+  }
+}
 
 
 
@@ -287,6 +303,8 @@ module.exports = {
   postProductosController,
   patchProductosController,
   deleteProductosController,
+  //carrito
+  postCarritoController,
   //categorias
   getCategoriasController, 
   postCategoriasController, 
