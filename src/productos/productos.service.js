@@ -22,7 +22,6 @@ const productosRelacionados = async (id_categoria) => {
             WHERE p.categoria = ?`,
     [id_categoria]
   )
-  console.log(result);
   return result
 }
 
@@ -114,7 +113,7 @@ const postProductosService = async (producto) => {
     }
     return response
   }
-  catch {
+  catch (error) {
     const response = {
       status: 400,
       message: "Fallo en la creacion del producto",
