@@ -18,7 +18,8 @@ const {
   deleteProductosController,
   controllerGetProductoId,
   productosRelacionadosController,
-  postCarritoController
+  postCarritoController,
+  buscarProductosController
 } = require("./productos.controller");
 
 const route = Router();
@@ -46,5 +47,7 @@ route.get("/descuentos", getDescuentosController);
 route.post("/descuentos", postDescuentosController);
 route.patch("/descuentos/:id_descuento", patchDescuentosController);
 route.delete("/descuentos/:id_descuento", deleteDescuentosController);
+//Buscador
+route.get("/buscar/:name", buscarProductosController)
 
 module.exports = route;
