@@ -14,6 +14,7 @@ const getTodosSociosService = async () => {
               p.nombre_plan
       FROM gym_socios s
       JOIN gym_planes p ON s.id_plan = p.id_plan
+      ORDER BY s.apellido
       `);
     const response = {
       status: 200,

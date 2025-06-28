@@ -487,6 +487,7 @@ const deleteDescuentosService = async (id_descuento) => {
     }
     return response
   } catch (error) {
+    console.log(error);
     const response = {
       status: 400,
       message: "Fallo en la eliminacion del descuento",
