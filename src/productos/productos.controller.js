@@ -1,5 +1,19 @@
 const { db_connection } = require("../config/database");
-const { productosRelacionados, getProductoId, getTodosProductosService, getCategoriasService, postCategoriasService, patchCategoriasService, deleteCategoriasService, getImagenesService, postImagenesService, patchImagenesService, deleteImagenesService, getDescuentosService, postDescuentosService, patchDescuentosService, deleteDescuentosService, postProductosService, patchProductosService, deleteProductosService, carritoService } = require("./productos.service");
+const { productosRelacionados, getProductoId, getTodosProductosService, getCategoriasService, postCategoriasService, patchCategoriasService, deleteCategoriasService, getImagenesService, postImagenesService, patchImagenesService, deleteImagenesService, getDescuentosService, postDescuentosService, patchDescuentosService, deleteDescuentosService, postProductosService, patchProductosService, deleteProductosService, carritoService, buscarProductos } = require("./productos.service");
+
+const buscarProductosController = async (req, res) => {
+  try {
+    const {name} = req.params
+    const response = await buscarProductos(name)
+    res.status(200).json(response);
+    // if (!id || id.trim() === "") {
+    //   return res.status(400).json({ message: "Debe enviar un id para buscar" })
+    // }
+  } catch (error) {
+    console.error("Error en buscarProductosController:", error);
+    return res.status(500).json({ message: "Error interno del servidor" })
+  }
+}
 
 const productosRelacionadosController = async (req, res) => {
   try {
@@ -297,6 +311,7 @@ const deleteDescuentosController = async (req, res) => {
 
 
 module.exports = {
+  buscarProductosController,
   productosRelacionadosController,
   controllerGetProductoId,
   getTodosProductosController, 
