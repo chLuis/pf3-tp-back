@@ -1,13 +1,44 @@
 const { db_connection } = require("../config/database");
 
-const getTodasVentasService = async (socio) => {
+const getTodasVentasService = async () => {
   try {
     const connection = await db_connection;
     const [results] = await connection.query(`
       SELECT v.id_venta, v.id_producto, p.nombre, v.cantidad, v.monto, u.usuario, v.createdAt as fecha_venta
       FROM productos_ventas v
       JOIN gym_usuarios u ON v.id_usuario = u.id_usuario
-      JOIN productos p ON v.id_producto = p.id_producto;
+      JOIN productos p ON v.id_producto = p.id_producto
+      ORDER BY fecha_venta DESC
+      ;`);
+
+    const response = {
+      status: 200,
+      message: "Ventas recolectadas",
+      data: results
+    }
+    return response
+  }
+  catch (error) {
+    console.log(error);
+    const response = {
+      status: 400,
+      message: "Fallo en la recoleccion de datos",
+      data: error
+    };
+    return response
+  }
+}
+
+const getTodasVentasRangeService = async (inicio, fin) => {
+  try {
+    const connection = await db_connection;
+    const [results] = await connection.query(`
+      SELECT v.id_venta, v.id_producto, p.nombre, v.cantidad, v.monto, u.usuario, v.createdAt as fecha_venta
+      FROM productos_ventas v
+      JOIN gym_usuarios u ON v.id_usuario = u.id_usuario
+      JOIN productos p ON v.id_producto = p.id_producto
+      WHERE v.createdAt BETWEEN '${inicio}' AND '${fin}'
+      ORDER BY fecha_venta DESC
       ;`);
 
     const response = {
@@ -31,15 +62,25 @@ const getTodasVentasService = async (socio) => {
 const postVentasService = async (venta) => {
   try {
     const connection = await db_connection;
-    const [results] = await connection.query(`
-      INSERT INTO productos_ventas (id_producto, id_usuario, cantidad, monto) VALUES
-      (${venta.id_producto}, '${venta.id_usuario}', ${venta.cantidad}, ${venta.monto});`)
-      const response = {
+    await connection.beginTransaction();
+
+    const [insertResult] = await connection.query(
+      `INSERT INTO productos_ventas (id_producto, id_usuario, cantidad, monto) VALUES (?, ?, ?, ?)`,
+      [venta.id_producto, venta.id_usuario, venta.cantidad, venta.monto]
+    );
+
+    //Actualizar stock
+    await connection.query(
+      `UPDATE productos SET stock = stock - ? WHERE id_producto = ?`,
+      [venta.cantidad, venta.id_producto]
+    );
+
+    await connection.commit()
+    return {
       status: 201,
       message: "Venta creada correctamente",
-      data: results
-    }
-    return response
+      data: insertResult
+    };
   }
   catch (error) {
     const response = {
@@ -97,4 +138,4 @@ const deleteVentasService = async (id_venta) => {
   }
 }
 
-module.exports = { getTodasVentasService, postVentasService, patchVentasService, deleteVentasService };
+module.exports = { getTodasVentasService, postVentasService, patchVentasService, deleteVentasService, getTodasVentasRangeService };
