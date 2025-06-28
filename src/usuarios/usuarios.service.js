@@ -29,7 +29,6 @@ const getUsuariosService = async (socio) => {
 }
 
 const postUsuariosService = async (usuario) => {
-  console.log(usuario);
   try {
     const connection = await db_connection;
     const [results] = await connection.query(`
@@ -53,11 +52,6 @@ const postUsuariosService = async (usuario) => {
 }
 
 const patchUsuariosService = async (usuario) => {
-  console.log(`
-      UPDATE gym_usuarios 
-      SET usuario = '${usuario.usuario}', rol = ${usuario.id_rol}
-      WHERE id_usuario = '${usuario.id_usuario}';
-      ;`);
   try {
     const connection = await db_connection;
     const [results] = await connection.query(`

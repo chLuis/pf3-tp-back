@@ -33,7 +33,6 @@ const postUsuariosController = async (req, res) => {
 
 const patchUsuariosController = async (req, res) => {
   const usuario = req.body;
-  console.log(usuario);
   try {
     const response = await patchUsuariosService(usuario)
     return res.json({
