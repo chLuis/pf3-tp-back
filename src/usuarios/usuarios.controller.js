@@ -78,7 +78,6 @@ const resetPasswordUsuariosController = async (req, res) => {
 
 const blockUnblockUsuariosController = async (req, res) => {
   const id_usuario = req.params.id_usuario
-  console.log(id_usuario);
   try {
     const response = await blockUnblockUsuariosService(id_usuario)
     return res.json({
