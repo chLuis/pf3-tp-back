@@ -1,9 +1,27 @@
-const { getTodasVentasService, postVentasService, patchVentasService, deleteVentasService } = require('./ventas.service')
+const { getTodasVentasService, postVentasService, patchVentasService, deleteVentasService, getTodasVentasRangeService } = require('./ventas.service')
 
 
 const getTodasVentasController = async (req, res) => {
   try {
     const response = await getTodasVentasService()
+    return res.json({
+      status: response.status,
+      message: response.message,
+      data: response.data});
+  }
+  catch (error) {
+    console.log(error);
+    return res.status(400).json(error);
+  }
+}
+
+const getTodasVentasRangeController = async (req, res) => {
+  const intervalo = req.params.intervalo.split('between')
+  const inicio = intervalo[0]
+  const fin = intervalo[1]
+
+  try {
+    const response = await getTodasVentasRangeService(inicio, fin)
     return res.json({
       status: response.status,
       message: response.message,
@@ -62,4 +80,4 @@ const deleteVentasController = async (req, res) => {
   }
 }
 
-module.exports = { getTodasVentasController, postVentasController, patchVentasController, deleteVentasController };
+module.exports = { getTodasVentasController, getTodasVentasRangeController, postVentasController, patchVentasController, deleteVentasController };
