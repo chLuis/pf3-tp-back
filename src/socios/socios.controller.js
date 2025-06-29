@@ -1,4 +1,4 @@
-const { getTodosSociosService, postAgregarTiempoSociosService, postNuevoSociosService, deleteSociosService } = require("./socios.service");
+const { getTodosSociosService, postAgregarTiempoSociosService, postNuevoSociosService, deleteSociosService, patchSociosService, getOneSociosService } = require("./socios.service");
 
 const getTodosSociosController = async (req, res) => {
   try {
@@ -14,10 +14,40 @@ const getTodosSociosController = async (req, res) => {
   }
 }
 
+const getOneSociosController = async (req, res) => {
+  const {dni} = req.params
+  try {
+    const response = await getOneSociosService(dni)
+    return res.json({
+      status: response.status,
+      message: response.message,
+      data: response.data});
+  }
+  catch (error) {
+    console.log(error, "_____");
+    return res.status(400).json(error);
+  }
+}
+
 const postNuevoSociosController = async (req, res) => {
   const socio = req.body
   try {
     const response = await postNuevoSociosService(socio)
+    return res.json({ 
+      status: response.status,
+      message: response.message,
+      data: response.data});
+  }
+  catch (error) {
+    console.log(error, "_____");
+    return res.status(400).json(error);
+  }
+}
+
+const patchSociosController = async (req, res) => {
+  const socio = req.body
+  try {
+    const response = await patchSociosService(socio)
     return res.json({ 
       status: response.status,
       message: response.message,
@@ -61,4 +91,4 @@ const postAgregarTiempoSociosController = async (req, res) => {
 }
 
 
-module.exports = { getTodosSociosController, postAgregarTiempoSociosController, postNuevoSociosController, deleteSociosController };
+module.exports = { getTodosSociosController, getOneSociosController, postAgregarTiempoSociosController, postNuevoSociosController, patchSociosController, deleteSociosController };
