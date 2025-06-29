@@ -63,7 +63,7 @@ const postVentasService = async (venta) => {
   try {
     const connection = await db_connection;
     await connection.beginTransaction();
-
+    //Para el post se hace una lectura del estado del stock para el producto seleccionado, para no disminuir su stock por debajo de cero
     const [rows] = await connection.query(
       `SELECT stock FROM productos WHERE id_producto = ? FOR UPDATE`,
       [venta.id_producto]

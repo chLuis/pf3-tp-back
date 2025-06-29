@@ -16,6 +16,7 @@ const getTodasVentasController = async (req, res) => {
 }
 
 const getTodasVentasRangeController = async (req, res) => {
+  //la confeccion de la ruta es fecha_inicio+between+fecha_fin para poder tomar las 2 fechas separamos usando la palabra between como ayuda
   const intervalo = req.params.intervalo.split('between')
   const inicio = intervalo[0]
   const fin = intervalo[1]
