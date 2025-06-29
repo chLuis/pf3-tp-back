@@ -15,13 +15,12 @@ const PORT = process.env.PORT || 8080;
 
 app.use(cors());
 
-//Creacion de la ruta para productos, usuarios y socios
+//Creacion de la ruta para productos, socios, login, ventas, usuarios
 app.use('/productos', routerProductos)
 app.use('/socios', routerSocios)
 app.use('/login', routerLogin)
 app.use('/ventas', routerVentas)
 app.use('/usuarios', routerUsuarios)
-
 
 
 app.listen(PORT, () => {
