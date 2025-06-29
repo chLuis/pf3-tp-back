@@ -112,6 +112,7 @@ const getTodosProductosService = async () => {
       JOIN productos_categorias c ON p.categoria = c.id_categoria
       JOIN productos_imagenes i ON p.imagen = i.id_imagen
       JOIN productos_descuentos d ON p.descuento = d.id_descuento
+      ORDER BY p.nombre
       `);
     const response = {
       status: 200,
