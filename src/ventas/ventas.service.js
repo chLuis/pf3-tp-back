@@ -64,6 +64,19 @@ const postVentasService = async (venta) => {
     const connection = await db_connection;
     await connection.beginTransaction();
 
+    const [rows] = await connection.query(
+      `SELECT stock FROM productos WHERE id_producto = ? FOR UPDATE`,
+      [venta.id_producto]
+    );
+
+    const stockActual = rows[0].stock;
+    if (stockActual < venta.cantidad) {
+      await connection.rollback();
+      return {
+        status: 400,
+        message: `Stock insuficiente: solo hay ${stockActual} unidades disponibles`,
+      };
+    }
     const [insertResult] = await connection.query(
       `INSERT INTO productos_ventas (id_producto, id_usuario, cantidad, monto) VALUES (?, ?, ?, ?)`,
       [venta.id_producto, venta.id_usuario, venta.cantidad, venta.monto]
